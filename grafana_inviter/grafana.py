@@ -32,7 +32,7 @@ class Grafana:
 
 
     def __query(self, method, api_endpoint, **kwargs):
-        """Create a request query depending on the HTTP method and endpoiint.
+        """Create a request query depending on the HTTP method and endpoint.
 
         Arguments:
             method {HttpMethod} -- HTTP method.
