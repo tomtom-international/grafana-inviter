@@ -140,7 +140,7 @@ def test_assemble(mock_grafana_ctor, mock_account_manager_ctor):
     # Then
     mock_account_manager_ctor.assert_called_with(ldap_query_config=test_config_json()["ldap"]["query"],
                                             ldap_user="test-user", ldap_password="test-password", ldap_url="ldaps://test-ldap")
-    mock_grafana_ctor.assert_called_with(grafana_server="https://test-grafana", grafana_token="test-token")
+    mock_grafana_ctor.assert_called_with(grafana_config=test_config_json()["grafana"])
 
     mock_grafana.invite.assert_called_with(account=mock_account, send_mail=False)
 

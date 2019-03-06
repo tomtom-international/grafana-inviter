@@ -19,16 +19,16 @@ class Grafana:
     """Simple class wrapping the Grafana HTTP API.
     """
 
-    def __init__(self, grafana_server, grafana_token):
+    def __init__(self, grafana_config):
         """Constructor
 
         Arguments:
             grafana_server {str} -- Grafana URL.
             grafana_token {str} -- Admin token for authentication in Grafana.
         """
-
-        self.__grafana_server = grafana_server
-        self.__grafana_token = grafana_token
+        self.__grafana_config = grafana_config
+        self.__grafana_server = grafana_config["url"]
+        self.__grafana_token = grafana_config["token"]
 
 
     def __query(self, method, api_endpoint, **kwargs):
@@ -71,9 +71,9 @@ class Grafana:
             "loginOrEmail": account.mail,
             "role": "Viewer",
             "sendEmail": send_mail,
-            "orgId": 16
+            "orgId": self.__grafana_config["orgId"]
         }
-
+        print(payload)
         response = self.__query(HttpMethod.POST, "org/invites", json=payload)
         return (response.status_code == requests.codes.ok, response.json()['message'])
 

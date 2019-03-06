@@ -11,6 +11,15 @@ from unittest.mock import ANY, call, MagicMock, patch
 from grafana_inviter.grafana import Grafana
 
 
+def test_grafana_config_json():
+    """Returns a test configuration
+    """
+    return {
+        "url": "https://grafana",
+        "token": "my-token",
+        "orgId": 123
+    }
+
 @patch("requests.get")
 @patch("requests.post")
 def test_should_generate_successful_invite(mock_requests_post, mock_requests_get):
@@ -26,14 +35,14 @@ def test_should_generate_successful_invite(mock_requests_post, mock_requests_get
     mock_requests_post.return_value = mock_requests_post_response
 
     # When
-    grafana = Grafana("http://grafana", "my-token")
+    grafana = Grafana(grafana_config=test_grafana_config_json())
     result, message = grafana.invite(mock_account)
 
     # Then
     mock_requests_post.assert_called_with(
-        "http://grafana/api/org/invites",
+        "https://grafana/api/org/invites",
         headers={"Authorization": "Bearer my-token"},
-        json={"name": "John Doe", "loginOrEmail": "john.doe@acme.org", "role": "Viewer", "sendEmail": False, "orgId": 16 })
+        json={"name": "John Doe", "loginOrEmail": "john.doe@acme.org", "role": "Viewer", "sendEmail": False, "orgId": 123 })
 
     assert result == True
     assert message == ""
@@ -53,7 +62,7 @@ def test_should_return_false_if_request_failed(mock_requests_post, mock_requests
     mock_requests_post.return_value = mock_requests_post_response
 
     # When
-    grafana = Grafana("http://grafana", "my-token")
+    grafana = Grafana(grafana_config=test_grafana_config_json())
     result, message = grafana.invite(mock_account)
 
     # Then
@@ -97,7 +106,7 @@ def test_should_not_send_invite_post_request_if_user_was_already_invited(mock_re
     mock_requests_get.return_value = mock_requests_get_response#
 
     # When
-    grafana = Grafana("http://grafana", "my-token")
+    grafana = Grafana(grafana_config=test_grafana_config_json())
     result, message = grafana.invite(mock_account)
 
     # Then
@@ -129,7 +138,7 @@ def test_should_populate_invite_link_to_account(mock_requests_get):
     mock_requests_get.return_value = mock_requests_get_response
 
     # When
-    grafana = Grafana("http://grafana", "my-token")
+    grafana = Grafana(grafana_config=test_grafana_config_json())
     grafana.populate_accounts_with_invite_links(mock_accounts)
 
     # Then

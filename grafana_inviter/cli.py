@@ -78,7 +78,7 @@ def assemble(config):
                              ldap_url=config["ldap"]["url"])
     accounts = manager.get_accounts()
 
-    grafana = Grafana(grafana_server=config["grafana"]["url"], grafana_token=config["grafana"]["token"])
+    grafana = Grafana(grafana_config=config["grafana"])
 
     for account in accounts:
         print("Sending invite to %s (%s)" % (account.name, account.mail))
