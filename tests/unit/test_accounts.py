@@ -10,13 +10,22 @@ import pytest
 from unittest.mock import ANY, call, patch, MagicMock
 from grafana_inviter.accounts import AccountManager
 
-CONFIG = {
-  "ldap": {
-    "group_base_dn": "OU=AC,OU=Employees,O=acme,C=global",
-    "search_filter": "(&(o=SubUnit)(memberOf=CN=AnotherGroup,CN=GroupB,CN=Roles,O=acme,C=global))",
-    "retrieve_attributes": ["uid", "mail", "name", "msDS-UserAccountDisabled", "memberOf"]
-  }
-}
+
+def test_config_json():
+    """Returns a test configuration
+    """
+    return {
+        "ldap": {
+            "url": "ldps://testserver",
+            "user": "user",
+            "password": "password",
+            "query": {
+                "group_base_dn": "OU=AC,OU=Employees,O=acme,C=global",
+                "search_filter": "(&(o=SubUnit)(memberOf=CN=AnotherGroup,CN=GroupB,CN=Roles,O=acme,C=global))",
+                "retrieve_attributes": ["uid", "mail", "name", "msDS-UserAccountDisabled", "memberOf"]
+            }
+        }
+    }
 
 LDAP_ACCOUNT_SEARCH_RESULT = [
     ("CN=John Doe,OU=AC,OU=Employees,O=acme,C=global", {
@@ -53,15 +62,15 @@ def test_account_manager(mock_ldap_initialize):
     # Given
     mock_ldap_connection = MagicMock()
     mock_ldap_initialize.return_value = mock_ldap_connection
-    dummy_config = MagicMock(items_dict=CONFIG)
 
     # When
-    AccountManager(config=dummy_config, username="test", password="pwd", ldap_server="ldps://testserver")
+    AccountManager(ldap_query_config=test_config_json()["ldap"]["query"],
+                   ldap_user="user", ldap_password="password", ldap_url="ldps://testserver")
 
     # Then
     mock_ldap_initialize.assert_called_with("ldps://testserver")
     mock_ldap_connection.assert_has_calls([
-        call.simple_bind_s("test", "pwd")
+        call.simple_bind_s("user", "password")
     ])
 
 
@@ -73,9 +82,9 @@ def test_should_return_expected_accounts(mock_ldap_initialize):
     mock_ldap_connection = MagicMock()
     mock_ldap_initialize.return_value = mock_ldap_connection
     mock_ldap_connection.search_s.return_value = LDAP_ACCOUNT_SEARCH_RESULT
-    dummy_config = CONFIG
 
-    manager = AccountManager(config=dummy_config, username="test", password="pwd", ldap_server="ldps://testserver")
+    manager = AccountManager(ldap_query_config=test_config_json()["ldap"]["query"],
+                             ldap_user="user", ldap_password="password", ldap_url="ldps://testserver")
 
     # When
     accounts = manager.get_accounts()

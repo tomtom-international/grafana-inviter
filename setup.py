@@ -20,7 +20,8 @@ setup(
     install_requires=[
         "python-ldap>=3.1.0,<4",
         "requests>=2.16.0,<3",
-        "anyconfig>=0.9.8,<1"
+        "anyconfig>=0.9.8,<1",
+        "jsonschema>=3.0.1,<4"
     ],
     setup_requires=["pytest-runner>=4.2,<5"],
     tests_require=[

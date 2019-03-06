@@ -1,7 +1,18 @@
 {
   "ldap": {
-    "group_base_dn": "OU=TT,OU=Employees,O=acme,C=global",
-    "search_filter": "(&(o=SOME_GROUP)(memberOf=CN=ANOTHER_GROUP,CN=INTERNAL_GROUP,CN=Roles,O=acme,C=global))",
-    "retrieve_attributes": ["uid", "mail", "name", "msDS-UserAccountDisabled", "memberOf"]
+    "url": "ldps://ldap.acme.org",
+    "user": "service_user",
+    "password": "password",
+    "query": {
+      "group_base_dn": "OU=TT,OU=Employees,O=acme,C=global",
+      "search_filter": "(&(o=SOME_GROUP)(memberOf=CN=ANOTHER_GROUP,CN=INTERNAL_GROUP,CN=Roles,O=acme,C=global))",
+      "retrieve_attributes": ["uid", "mail", "name", "msDS-UserAccountDisabled", "memberOf"]
+    }
+  },
+  "grafana": {
+    "url": "https://grafana.acme.org",
+    "token": "grafana-token",
+    "send_invite_mail": false,
+    "orgId": 123
   }
 }

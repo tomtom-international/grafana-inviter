@@ -35,10 +35,10 @@ class AccountManager:
         def __repr__(self):
             return "%s" % json.dumps(self.__dict__)
 
-    def __init__(self, config, username, password, ldap_server):
-        self.__config = config
-        self.__connection = ldap.initialize(ldap_server)
-        self.__connection.simple_bind_s(username, password)
+    def __init__(self, ldap_query_config, ldap_user, ldap_password, ldap_url):
+        self.__ldap_query_config = ldap_query_config
+        self.__connection = ldap.initialize(ldap_url)
+        self.__connection.simple_bind_s(ldap_user, ldap_password)
 
 
     def get_accounts(self):
@@ -48,9 +48,9 @@ class AccountManager:
             [list] -- Returns a list of :class:`grafana_inviter.accounts.AccountManager.Account`
         """
 
-        group_base_dn = self.__config["ldap"]["group_base_dn"]
-        search_filter = self.__config["ldap"]["search_filter"]
-        retrieve_attributes = self.__config["ldap"]["retrieve_attributes"]
+        group_base_dn = self.__ldap_query_config["group_base_dn"]
+        search_filter = self.__ldap_query_config["search_filter"]
+        retrieve_attributes = self.__ldap_query_config["retrieve_attributes"]
 
         # pylint: disable=no-member
         search_scope = ldap.SCOPE_SUBTREE
