@@ -1,6 +1,10 @@
 from __future__ import with_statement
 
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from distutils.core import setup, find_packages
+
 
 import grafana_inviter
 
