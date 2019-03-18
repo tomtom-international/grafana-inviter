@@ -1,6 +1,9 @@
 # grafana-inviter
 
-[![Build Status](https://dev.azure.com/tomtomweb/GitHub-TomTom-International/_apis/build/status/tomtom-international.grafana-inviter?branchName=master)](https://dev.azure.com/tomtomweb/GitHub-TomTom-International/_build/latest?definitionId=2&branchName=master)
+[![image](https://dev.azure.com/tomtomweb/GitHub-TomTom-International/_apis/build/status/tomtom-international.grafana-inviter?branchName=master)](https://dev.azure.com/tomtomweb/GitHub-TomTom-International/_build/latest?definitionId=2&branchName=master)
+[![image](https://img.shields.io/pypi/v/grafana-inviter.svg)](https://pypi.org/project/grafana-inviter/)
+[![image](https://img.shields.io/pypi/l/grafana-inviter.svg)](https://pypi.org/project/grafana-inviter/)
+[![image](https://img.shields.io/pypi/pyversions/grafana-inviter.svg)](https://pypi.org/project/grafana-inviter/)
 
 Inviting people to join a Grafana organization is usually done from the Grafana UI. For smaller groups this might be easy but for a larger set of people one
 rather would like to not fiddle around in the UI and instead do it in an automated fashion.
