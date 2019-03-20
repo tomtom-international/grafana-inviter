@@ -16,14 +16,20 @@ This tool is intended to send invites to join a new Grafana organization to peop
 $ python setup.py install
 ```
 
+or
+
+```bash
+$ pip install grafana-inviter
+```
+
 ## Usage
 
 * Copy the *example_config.json* configuration and adjust it to your needs
-* Generate a Grafana API token with admin privileges (https://<YOUR_GRAFANA_URL>/org/apikeys)
+* Generate a Grafana API token with admin privileges (*https://<YOUR_GRAFANA_URL>/org/apikeys*)
 * Ensure you have a LDAP service account user for searches created
 
 ```bash
-$ grafana-inviter --grafana-token "<YOUR_GF_TOKEN_WITH" --ldap-user <YOUR_SVC_ACCOUNT_USER> --config config.json --ask-ldap-password
+$ grafana-inviter --grafana-token "<YOUR_GF_TOKEN_WITH>" --ldap-user <YOUR_SVC_ACCOUNT_USER> --config config.json --ask-ldap-password
 LDAP password:
 Sending invite to John Doe (John Doe@acme.org)
 {'name': 'John Doe', 'loginOrEmail': 'John.Doe@acme.org', 'role': 'Viewer', 'sendEmail': False, 'orgId': 10}
