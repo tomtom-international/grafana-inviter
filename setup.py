@@ -18,6 +18,7 @@ setup(
     author_email=grafana_inviter.__author_mail__,
     description=grafana_inviter.__description__,
     long_description=readme,
+    long_description_content_type='text/markdown',
     url=("https://github.com/tomtom-international/grafana-inviter"),
     packages=["grafana_inviter"],
     python_requires=">3.5",
