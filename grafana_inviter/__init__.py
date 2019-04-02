@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-__version__ = "0.0.7-dev"
+__version__ = "0.0.7"
 __author__ = "Martin Migasiewicz"
 __author_mail__ = "migasiew.nk@gmail.com"
 __copyright__ = "%s, TomTom International B.V." % datetime.now().year
