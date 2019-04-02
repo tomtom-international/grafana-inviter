@@ -40,10 +40,15 @@ grafana-inviter = grafana_inviter.cli:main
 """,
     dependency_links=[],
     classifiers=[
-        "Programming Language :: Python :: 3",
-        "Intended Audience :: Developers",
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         "Environment :: Console",
-        "Operating System :: OS Independent",
+        "Operating System :: OS Independent"
     ],
     license=grafana_inviter.__license__,
     zip_safe=False,
