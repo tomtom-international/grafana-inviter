@@ -93,21 +93,22 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated.
    Put your new functionality into a function with a docstring, and add the feature to the list in README.md.
 3. The pull request should work for Python 3.5, 3.6 and 3.7, and
-   for PyPy. Check https://https://dev.azure.com/tomtomweb/GitHub-TomTom-International/tomtom-international.grafana-inviter and make sure that the tests pass for all supported Python versions.
+   for PyPy. Check https://https://dev.azure.com/tomtomweb/GitHub-TomTom-International/_build and make sure that the tests pass for all supported Python versions.
 
 ## Tips
 
 To run a subset of tests:
 
-> $ py.test [tests.test]()grafana_inviter
+> $ py.test tests/unit/test_grafana.py
 
 ## Deploying
 
-A reminder for the maintainers on how to deploy. Make sure all your
-changes are committed (including an entry in CHANGELOG.md). Then run:
+Deployment can only be done by the project maintainers and is done on-demand via Azure Pipelines.
 
-    $ bumpversion patch # possible: major / minor / patch
-    $ git push
-    $ git push --tags
+Select the [project build pipeline](https://dev.azure.com/tomtomweb/GitHub-TomTom-International/_build) and click
+on the **Queue** button and run a build with the following settings:
 
-Azure Pipelines will then deploy to PyPI if tests pass.
+* Branch: `master`
+* Commit: leave it empty
+* Variables:
+  * `release: true`
