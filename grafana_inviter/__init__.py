@@ -1,10 +1,7 @@
-"""Version of the grafana_inviter module"""
+# -*- coding: utf-8 -*-
 
-from datetime import datetime
+"""Top-level package for grafana-inviter."""
 
+__author__ = """Martin Migasiewicz"""
+__email__ = "migasiew.nk@gmail.com"
 __version__ = "0.0.8-dev"
-__author__ = "Martin Migasiewicz"
-__author_mail__ = "migasiew.nk@gmail.com"
-__copyright__ = "%s, TomTom International B.V." % datetime.now().year
-__description__ = "Python module and script to invite people fetched from LDAP to Grafana"
-__license__ = "Apache 2.0"

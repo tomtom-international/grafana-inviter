@@ -1,6 +1,5 @@
 # Changelog
 
-**0.0.1** (2019-03-19):
+## 0.0.1-dev (2019-04-03)
 
-* Initial commit of grafana-inviter including Azure pipeline.
-
+* First release on PyPI.
