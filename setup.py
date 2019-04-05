@@ -50,7 +50,7 @@ setup(
     long_description_content_type="text/markdown",
     include_package_data=True,
     keywords="grafana_inviter",
-    name="grafana-inviter",
+    name=grafana_inviter.__project__,
     packages=find_packages(include=["grafana_inviter"]),
     setup_requires=setup_requirements,
     test_suite="tests",

@@ -1,14 +1,14 @@
-Welcome to grafana-inviter's documentation!
-======================================
+grafana-inviter documentation
+=============================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   readme
+   Readme <readme>
    installation
    usage
-   modules
+   Modules <modules>
    contributing
    authors
    history

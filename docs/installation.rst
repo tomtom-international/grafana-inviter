@@ -32,7 +32,7 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/tomtom-international/grafana_inviter
+    $ git clone git@github.com:your_name_here/grafana-inviter.git
 
 Or download the `tarball`_:
 

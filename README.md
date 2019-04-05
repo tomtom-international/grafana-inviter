@@ -46,4 +46,4 @@ Available invite URLs: ['https://<YOUR_GRAFANA_URL>/invite/Vv4Q8SYVyk7ULGpeWvjMX
 
 ## Credits
 
-This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [`tomtom-international/cookiecutter-python`](https://github.com/tomtom-international/cookiecutter-python) project template.
+This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [tomtom-international/cookiecutter-python](https://github.com/tomtom-international/cookiecutter-python) project template.
