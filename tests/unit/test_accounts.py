@@ -28,60 +28,68 @@ def test_config_json():
     }
 
 LDAP_ACCOUNT_SEARCH_RESULT = [
-    ("CN=John Doe,OU=AC,OU=Employees,O=acme,C=global", {
-        "memberOf": [
-            b"CN=TeamA,CN=GroupA,CN=Roles,O=acme,C=global",
-            b"CN=AnotherGroup,CN=GroupB,CN=Roles,O=acme,C=global",
-            b"CN=AcmeUsers,CN=acme,CN=Roles,O=acme,C=global",
-            b"CN=Acme Employees,CN=Roles,O=acme,C=global"
-        ],
-        "name": [b"John Doe"],
-        "msDS-UserAccountDisabled": [b"FALSE"],
-        "uid": [b"jodoe"],
-        "mail": [b"John.Doe@acme.com"]
-    }),
-    ("CN=Jane Doe,OU=AC,OU=Employees,O=acme,C=global", {
-        "memberOf": [
-            b"CN=TeamB,CN=GroupA,CN=Roles,O=acme,C=global",
-            b"CN=AnotherGroup,CN=GroupB,CN=Roles,O=acme,C=global",
-            b"CN=AcmeUsers,CN=acme,CN=Roles,O=acme,C=global",
-            b"CN=Acme Employees,CN=Roles,O=acme,C=global"
-        ],
-        "name": [b"Jane Doe"],
-        "msDS-UserAccountDisabled": [b"FALSE"],
-        "uid": [b"jadoe"],
-        "mail": [b"Jane.Doe@acme.com"]
-    })
+    {
+        "raw_dn": b"CN=John Doe,OU=AC,OU=Employees,O=acme,C=global",
+        "raw_attributes": {
+            "memberOf": [
+                b"CN=TeamA,vCN=GroupA,CN=Roles,O=acme,C=global",
+                b"CN=AnotherGroup,CN=GroupB,CN=Roles,O=acme,C=global",
+                b"CN=AcmeUsers,CN=acme,CN=Roles,O=acme,C=global",
+                b"CN=Acme Employees,CN=Roles,O=acme,C=global"
+            ],
+            "name": [b"John Doe"],
+            "msDS-UserAccountDisabled": [b"FALSE"],
+            "uid": [b"jodoe"],
+            "mail": [b"John.Doe@acme.com"]
+        }
+    },
+    {
+        "raw_dn": b"CN=Jane Doe,OU=AC,OU=Employees,O=acme,C=global",
+        "raw_attributes": {
+            "memberOf": [
+                b"CN=TeamB,CN=GroupA,CN=Roles,O=acme,C=global",
+                b"CN=AnotherGroup,CN=GroupB,CN=Roles,O=acme,C=global",
+                b"CN=AcmeUsers,CN=acme,CN=Roles,O=acme,C=global",
+                b"CN=Acme Employees,CN=Roles,O=acme,C=global"
+            ],
+            "name": [b"Jane Doe"],
+            "msDS-UserAccountDisabled": [b"FALSE"],
+            "uid": [b"jadoe"],
+            "mail": [b"Jane.Doe@acme.com"]
+        }
+    }
 ]
 
 
-@patch("ldap.initialize")
-def test_account_manager(mock_ldap_initialize):
+@patch("ldap3.Server")
+@patch("ldap3.Connection")
+def test_account_manager(mock_ldap_connection, mock_ldap_server):
     """Test account manager
     """
     # Given
-    mock_ldap_connection = MagicMock()
-    mock_ldap_initialize.return_value = mock_ldap_connection
+    mock_ldap_server_instance = mock_ldap_server.return_value
+    mock_ldap_connection_instance = mock_ldap_connection.return_value
 
     # When
     AccountManager(ldap_query_config=test_config_json()["ldap"]["query"],
                    ldap_user="user", ldap_password="password", ldap_url="ldps://testserver")
 
     # Then
-    mock_ldap_initialize.assert_called_with("ldps://testserver")
-    mock_ldap_connection.assert_has_calls([
-        call.simple_bind_s("user", "password")
-    ])
+    mock_ldap_server.assert_called_with("ldps://testserver")
+    mock_ldap_connection.assert_called_with(server=mock_ldap_server_instance,
+                                            user="user",
+                                            password="password")
+    mock_ldap_connection_instance.assert_has_calls([call.bind()])
 
 
-@patch("ldap.initialize")
-def test_should_return_expected_accounts(mock_ldap_initialize):
+@patch("ldap3.Server")
+@patch("ldap3.Connection")
+def test_should_return_expected_accounts(mock_ldap_connection, mock_ldap_server):
     """Tests that accounts are returned from AccountManager.
     """
     # Given
-    mock_ldap_connection = MagicMock()
-    mock_ldap_initialize.return_value = mock_ldap_connection
-    mock_ldap_connection.search_s.return_value = LDAP_ACCOUNT_SEARCH_RESULT
+    mock_ldap_connection_instance = mock_ldap_connection.return_value
+    mock_ldap_connection_instance.response = LDAP_ACCOUNT_SEARCH_RESULT
 
     manager = AccountManager(ldap_query_config=test_config_json()["ldap"]["query"],
                              ldap_user="user", ldap_password="password", ldap_url="ldps://testserver")
@@ -90,11 +98,11 @@ def test_should_return_expected_accounts(mock_ldap_initialize):
     accounts = manager.get_accounts()
 
     # Then
-    mock_ldap_connection.assert_has_calls([
-        call.search_s("OU=AC,OU=Employees,O=acme,C=global",
-                      ANY,
-                      "(&(o=SubUnit)(memberOf=CN=AnotherGroup,CN=GroupB,CN=Roles,O=acme,C=global))",
-                      ["uid", "mail", "name", "msDS-UserAccountDisabled", "memberOf"])
+    mock_ldap_connection_instance.assert_has_calls([
+        call.search(search_base="OU=AC,OU=Employees,O=acme,C=global",
+                    search_filter="(&(o=SubUnit)(memberOf=CN=AnotherGroup,CN=GroupB,CN=Roles,O=acme,C=global))",
+                    search_scope=ANY,
+                    attributes=["uid", "mail", "name", "msDS-UserAccountDisabled", "memberOf"])
     ])
 
     assert len(accounts) == 2

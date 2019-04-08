@@ -19,7 +19,7 @@ with open("README.md") as readme_file:
 with open("CHANGELOG.md") as changelog_file:
     changelog = changelog_file.read()
 
-requirements = ["python-ldap>=3.2.0,<4", "requests>=2.21.0,<3", "anyconfig>=0.9.8,<1", "jsonschema>=3.0.1,<4"]
+requirements = ["ldap3>=2.6,<3", "requests>=2.21.0,<3", "anyconfig>=0.9.8,<1", "jsonschema>=3.0.1,<4"]
 
 setup_requirements = ["pytest-runner",]
 
