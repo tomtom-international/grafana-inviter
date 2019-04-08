@@ -4,7 +4,7 @@
 """
 
 import json
-import ldap
+import ldap3
 
 
 # pylint: disable=too-few-public-methods
@@ -18,7 +18,7 @@ class AccountManager:
         """
 
         def __init__(self, ldap_account, ldap_account_attributes):
-            account = ldap_account[1]
+            account = ldap_account["raw_attributes"]
             for ldap_attribute in ldap_account_attributes:
                 attribute_values = account[ldap_attribute]
                 attribute_values_size = len(attribute_values)
@@ -37,8 +37,9 @@ class AccountManager:
 
     def __init__(self, ldap_query_config, ldap_user, ldap_password, ldap_url):
         self.__ldap_query_config = ldap_query_config
-        self.__connection = ldap.initialize(ldap_url)
-        self.__connection.simple_bind_s(ldap_user, ldap_password)
+        server = ldap3.Server(ldap_url)
+        self.__connection = ldap3.Connection(server=server, user=ldap_user, password=ldap_password)
+        self.__connection.bind()
 
 
     def get_accounts(self):
@@ -52,8 +53,7 @@ class AccountManager:
         search_filter = self.__ldap_query_config["search_filter"]
         retrieve_attributes = self.__ldap_query_config["retrieve_attributes"]
 
-        # pylint: disable=no-member
-        search_scope = ldap.SCOPE_SUBTREE
-
-        group_members = self.__connection.search_s(group_base_dn, search_scope, search_filter, retrieve_attributes)
+        self.__connection.search(search_base=group_base_dn, search_filter=search_filter, search_scope=ldap3.SUBTREE, attributes=retrieve_attributes)
+        group_members = self.__connection.response
+        print(group_members)
         return [AccountManager.Account(member, retrieve_attributes) for member in group_members]
