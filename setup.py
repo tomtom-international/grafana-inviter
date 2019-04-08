@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""The setup script."""
+
 from __future__ import with_statement
 
 try:
@@ -23,7 +28,7 @@ setup(
     packages=["grafana_inviter"],
     python_requires=">3.5",
     install_requires=[
-        "python-ldap>=3.1.0,<4",
+        "ldap3>=2.6,<3",
         "requests>=2.16.0,<3",
         "anyconfig>=0.9.8,<1",
         "jsonschema>=3.0.1,<4"
