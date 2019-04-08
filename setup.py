@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""The setup script."""
+
 from __future__ import with_statement
 
 try:
@@ -5,51 +10,52 @@ try:
 except ImportError:
     from distutils.core import setup, find_packages
 
-
 import grafana_inviter
 
-with open("README.md", "r") as fh:
-    readme = fh.read()
+
+with open("README.md") as readme_file:
+    readme = readme_file.read()
+
+with open("CHANGELOG.md") as changelog_file:
+    changelog = changelog_file.read()
+
+requirements = ["ldap3>=2.6,<3", "requests>=2.21.0,<3", "anyconfig>=0.9.8,<1", "jsonschema>=3.0.1,<4"]
+
+setup_requirements = ["pytest-runner",]
+
+test_requirements = ["pytest", "pytest-cov", "coverage",]
 
 setup(
-    name="grafana-inviter",
-    version=grafana_inviter.__version__,
     author=grafana_inviter.__author__,
-    author_email=grafana_inviter.__author_mail__,
-    description=grafana_inviter.__description__,
-    long_description=readme,
-    long_description_content_type='text/markdown',
-    url=("https://github.com/tomtom-international/grafana-inviter"),
-    packages=["grafana_inviter"],
-    python_requires=">3.5",
-    install_requires=[
-        "python-ldap>=3.1.0,<4",
-        "requests>=2.16.0,<3",
-        "anyconfig>=0.9.8,<1",
-        "jsonschema>=3.0.1,<4"
-    ],
-    setup_requires=["pytest-runner>=4.2,<5"],
-    tests_require=[
-        "coverage>=4.5,<5"
-        "pytest>=4.1,<5",
-        "pytest-cov>=2.6,<3"
-    ],
-    entry_points="""
-[console_scripts]
-grafana-inviter = grafana_inviter.cli:main
-""",
-    dependency_links=[],
+    author_email=grafana_inviter.__email__,
     classifiers=[
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        "Environment :: Console",
-        "Operating System :: OS Independent"
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
     ],
-    license=grafana_inviter.__license__,
+    description="Python module and script to invite people fetched from LDAP to Grafana",
+    entry_points={
+        "console_scripts": [
+            "grafana-inviter=grafana_inviter.cli:main",
+        ],
+    },
+    install_requires=requirements,
+    license="Apache Software License 2.0",
+    long_description=readme + "\n\n" + changelog,
+    long_description_content_type="text/markdown",
+    include_package_data=True,
+    keywords="grafana_inviter",
+    name=grafana_inviter.__project__,
+    packages=find_packages(include=["grafana_inviter"]),
+    setup_requires=setup_requirements,
+    test_suite="tests",
+    tests_require=test_requirements,
+    url="https://github.com/tomtom-international/grafana-inviter",
+    version=grafana_inviter.__version__,
     zip_safe=False,
 )
